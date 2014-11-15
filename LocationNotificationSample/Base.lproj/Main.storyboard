@@ -21,7 +21,7 @@
             </objects>
             <point key="canvasLocation" x="-891" y="427"/>
         </scene>
-        <!--View Controller-->
+        <!--タップで目的地セット-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
                 <viewController id="vXZ-lx-hvc" customClass="ViewController" sceneMemberID="viewController">
@@ -35,8 +35,10 @@
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qGp-tG-bsJ">
                                 <rect key="frame" x="140" y="64" width="320" height="472"/>
+                                <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="RNY-RT-Wo1"/>
+                                    <outletCollection property="gestureRecognizers" destination="b5e-MM-Vj4" appends="YES" id="CCs-eu-Yll"/>
                                 </connections>
                             </mapView>
                         </subviews>
@@ -49,18 +51,29 @@
                             <constraint firstItem="qGp-tG-bsJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="qzg-hm-lii"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K1w-W5-cHk">
+                    <navigationItem key="navigationItem" title="タップで目的地セット" id="K1w-W5-cHk">
                         <barButtonItem key="leftBarButtonItem" title="現在地" id="IQQ-yl-FIu">
                             <connections>
                                 <action selector="currentButtonDidTap:" destination="vXZ-lx-hvc" id="PyU-ik-7VW"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="save" id="2HT-s9-wQX">
+                            <connections>
+                                <action selector="saveButtonDidTap:" destination="vXZ-lx-hvc" id="Pbo-B5-ss1"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="qGp-tG-bsJ" id="O9r-v9-yh3"/>
+                        <outlet property="saveButtonItem" destination="2HT-s9-wQX" id="1qc-3Z-J0y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="b5e-MM-Vj4">
+                    <connections>
+                        <action selector="mapViewDidTap:" destination="vXZ-lx-hvc" id="Qla-Cg-Z1l"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-102" y="427"/>
         </scene>

@@ -9,6 +9,7 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButtonItem;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic) CLLocationManager *locationManager;
 @property (nonatomic) BOOL didInitializeUserLocation;
@@ -27,8 +28,6 @@
     // 位置情報使用許可
     [self.locationManager requestAlwaysAuthorization];
 
-    
-    
 //    [locationManager startUpdatingLocation];
 }
 
@@ -41,16 +40,20 @@
 
 #pragma mark - Private methods
 
-- (void)setNotification
+- (void)setNotificationWithTarget:(CLLocationCoordinate2D)target
 {
+    // 緯度経度の検証
+    if (!CLLocationCoordinate2DIsValid(target)) {
+        return;
+    }
+
     // 設定する前に、設定済みの通知をキャンセルする
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
-    // 目的地を設定
-    CLLocationCoordinate2D target = CLLocationCoordinate2DMake(35.74054023732303,139.61697354912758);  // 六本木
+    // 目的地の領域を設定
+//    CLLocationCoordinate2D target = CLLocationCoordinate2DMake(35.74054023732303,139.61697354912758);  // 六本木
     CLLocationDistance radius = 100.0;  // 半径何メートルに入ったら通知するか
     NSString *identifier = @"identifier"; // 通知のID
-
     CLCircularRegion *region = [[CLCircularRegion alloc] initWithCenter:target
                                                                  radius:radius
                                                              identifier:identifier];
@@ -90,6 +93,37 @@
     CLLocationCoordinate2D center = self.mapView.userLocation.location.coordinate;
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
 }
+
+- (IBAction)saveButtonDidTap:(id)sender
+{
+    if ([self.mapView.overlays count] == 0) {
+        return;
+    }
+
+    MKCircle *circle = self.mapView.overlays[0];
+    [self setNotificationWithTarget:circle.coordinate];
+
+    self.saveButtonItem.enabled = NO;
+}
+
+// タップイベントを検出
+- (IBAction)mapViewDidTap:(UITapGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        // いったんすべてのサークルを消す
+        [self.mapView removeOverlays:self.mapView.overlays];
+
+        // タップした位置を緯度経度に変換してサークルを表示
+        CGPoint tapPoint = [sender locationInView:self.view];
+        CLLocationCoordinate2D center = [self.mapView convertPoint:tapPoint toCoordinateFromView:self.mapView];
+        MKCircle *circle = [MKCircle circleWithCenterCoordinate:center radius:100];
+        [self.mapView addOverlay:circle];
+
+        self.saveButtonItem.enabled = YES;
+    }
+}
+
 
 #pragma mark - MKMapView delegate
 
@@ -133,7 +167,7 @@
         case kCLAuthorizationStatusAuthorizedWhenInUse:
         case kCLAuthorizationStatusAuthorizedAlways:
             // 位置情報の使用が許可されていたらNotificationセット
-            [self setNotification];
+//            [self setNotification];
             break;
             
         default:
