@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="jqy-Lo-08n">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -33,8 +32,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qGp-tG-bsJ">
-                                <rect key="frame" x="140" y="64" width="320" height="472"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qGp-tG-bsJ">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="RNY-RT-Wo1"/>
@@ -44,11 +43,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="qGp-tG-bsJ" secondAttribute="trailing" id="AQ8-tx-7d9"/>
-                            <constraint firstAttribute="centerY" secondItem="qGp-tG-bsJ" secondAttribute="centerY" id="QRE-XB-2mc"/>
-                            <constraint firstAttribute="centerX" secondItem="qGp-tG-bsJ" secondAttribute="centerX" id="ZhU-R0-dgw"/>
-                            <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="qGp-tG-bsJ" secondAttribute="bottom" id="lH5-2b-9kb"/>
-                            <constraint firstItem="qGp-tG-bsJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="qzg-hm-lii"/>
+                            <constraint firstItem="qGp-tG-bsJ" firstAttribute="top" secondItem="kh9-bI-dsS" secondAttribute="top" id="22h-LL-vKH"/>
+                            <constraint firstItem="qGp-tG-bsJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="2ZT-4H-fzd"/>
+                            <constraint firstAttribute="trailing" secondItem="qGp-tG-bsJ" secondAttribute="trailing" id="d6P-Va-pbN"/>
+                            <constraint firstItem="qGp-tG-bsJ" firstAttribute="bottom" secondItem="2fi-mo-0CV" secondAttribute="top" id="hpk-K9-aU2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="タップで目的地セット" id="K1w-W5-cHk">
