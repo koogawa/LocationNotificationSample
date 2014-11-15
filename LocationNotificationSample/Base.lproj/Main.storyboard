@@ -49,7 +49,13 @@
                             <constraint firstItem="qGp-tG-bsJ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="qzg-hm-lii"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K1w-W5-cHk"/>
+                    <navigationItem key="navigationItem" id="K1w-W5-cHk">
+                        <barButtonItem key="leftBarButtonItem" title="現在地" id="IQQ-yl-FIu">
+                            <connections>
+                                <action selector="currentButtonDidTap:" destination="vXZ-lx-hvc" id="PyU-ik-7VW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="qGp-tG-bsJ" id="O9r-v9-yh3"/>
                     </connections>

@@ -43,14 +43,6 @@
 
 - (void)setNotification
 {
-    NSLog(@"%s, %@", __PRETTY_FUNCTION__, [[UIApplication sharedApplication] scheduledLocalNotifications]);
-    NSString *message = [NSString stringWithFormat:@"%@", [[UIApplication sharedApplication] scheduledLocalNotifications]];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"notification"
-message:message
-delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-//    [alertView show];
-    
-    
     // 設定する前に、設定済みの通知をキャンセルする
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
@@ -93,6 +85,11 @@ delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
     }
 }
 
+- (IBAction)currentButtonDidTap:(id)sender
+{
+    CLLocationCoordinate2D center = self.mapView.userLocation.location.coordinate;
+    [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
+}
 
 #pragma mark - MKMapView delegate
 
@@ -122,14 +119,6 @@ delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
     return nil;
 }
 
-//- (MKOverlayView *)mapView:(MKMapView *)map viewForOverlay:(id <MKOverlay>)overlay
-//{
-//    NSLog(@"overlay %@", overlay);
-//    MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
-//    circleView.strokeColor = [UIColor redColor];
-//    circleView.fillColor = [[UIColor redColor] colorWithAlphaComponent:0.4];
-//    return circleView;
-//}
 
 #pragma mark - CLLocationManager delegate
 
