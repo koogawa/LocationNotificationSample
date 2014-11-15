@@ -86,7 +86,15 @@ delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
         [self.mapView addOverlay:circle];
         [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
     }
+    else {
+        // スケジューリングされてないなら現在地を表示
+        CLLocationCoordinate2D center = userLocation.location.coordinate;
+        [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
+    }
 }
+
+
+#pragma mark - MKMapView delegate
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
