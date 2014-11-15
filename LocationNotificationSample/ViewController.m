@@ -9,7 +9,9 @@
 #import "ViewController.h"
 
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic) CLLocationManager *locationManager;
+@property (nonatomic) BOOL didInitializeUserLocation;
 @end
 
 @implementation ViewController
@@ -24,6 +26,8 @@
     
     // 位置情報使用許可
     [self.locationManager requestAlwaysAuthorization];
+
+    
     
 //    [locationManager startUpdatingLocation];
 }
@@ -39,16 +43,22 @@
 
 - (void)setNotification
 {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s, %@", __PRETTY_FUNCTION__, [[UIApplication sharedApplication] scheduledLocalNotifications]);
+    NSString *message = [NSString stringWithFormat:@"%@", [[UIApplication sharedApplication] scheduledLocalNotifications]];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"notification"
+message:message
+delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+//    [alertView show];
+    
     
     // 設定する前に、設定済みの通知をキャンセルする
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 
     // 目的地を設定
-    CLLocationCoordinate2D target = CLLocationCoordinate2DMake(35.665991, 139.732032);  // 六本木
+    CLLocationCoordinate2D target = CLLocationCoordinate2DMake(35.74054023732303,139.61697354912758);  // 六本木
     CLLocationDistance radius = 100.0;  // 半径何メートルに入ったら通知するか
     NSString *identifier = @"identifier"; // 通知のID
-    
+
     CLCircularRegion *region = [[CLCircularRegion alloc] initWithCenter:target
                                                                  radius:radius
                                                              identifier:identifier];
@@ -64,6 +74,54 @@
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
+- (void)userLocationDidInitialize:(MKUserLocation *)userLocation
+{
+    NSArray *scheduledLocalNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+    if ([scheduledLocalNotifications count] > 0)
+    {
+        // Notificationがスケジューリング済みならその領域を表示
+        UILocalNotification *notification = scheduledLocalNotifications[0];
+        CLLocationCoordinate2D center = [(CLCircularRegion *)notification.region center];
+        MKCircle *circle = [MKCircle circleWithCenterCoordinate:center radius:100];
+        [self.mapView addOverlay:circle];
+        [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
+    }
+}
+
+- (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
+{
+    if (!self.didInitializeUserLocation)
+    {
+        self.didInitializeUserLocation = YES;
+        [self userLocationDidInitialize:userLocation];
+    }
+}
+
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay
+{
+    NSLog(@"overlay %@", overlay);
+
+    if ([overlay isKindOfClass:[MKCircle class]])
+    {
+        MKCircleRenderer *renderer = [[MKCircleRenderer alloc] initWithCircle:(MKCircle *)overlay];
+        renderer.strokeColor = [UIColor redColor];
+        renderer.fillColor = [[UIColor redColor] colorWithAlphaComponent:0.4];
+        renderer.lineWidth = 1;
+
+        return renderer;
+    }
+
+    return nil;
+}
+
+//- (MKOverlayView *)mapView:(MKMapView *)map viewForOverlay:(id <MKOverlay>)overlay
+//{
+//    NSLog(@"overlay %@", overlay);
+//    MKCircleView *circleView = [[MKCircleView alloc] initWithOverlay:overlay];
+//    circleView.strokeColor = [UIColor redColor];
+//    circleView.fillColor = [[UIColor redColor] colorWithAlphaComponent:0.4];
+//    return circleView;
+//}
 
 #pragma mark - CLLocationManager delegate
 

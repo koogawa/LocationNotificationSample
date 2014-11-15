@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		21192CB91A1649BC00A03A77 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21192CB81A1649BC00A03A77 /* MapKit.framework */; };
 		213E86841A0F640500C81758 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 213E86831A0F640500C81758 /* main.m */; };
 		213E86871A0F640500C81758 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 213E86861A0F640500C81758 /* AppDelegate.m */; };
 		213E868A1A0F640500C81758 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 213E86891A0F640500C81758 /* ViewController.m */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		21192CB81A1649BC00A03A77 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		213E867E1A0F640500C81758 /* LocationNotificationSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationNotificationSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		213E86821A0F640500C81758 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		213E86831A0F640500C81758 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21192CB91A1649BC00A03A77 /* MapKit.framework in Frameworks */,
 				213E86A81A0F646200C81758 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +69,7 @@
 		213E86751A0F640500C81758 = {
 			isa = PBXGroup;
 			children = (
+				21192CB81A1649BC00A03A77 /* MapKit.framework */,
 				213E86A71A0F646200C81758 /* CoreLocation.framework */,
 				213E86801A0F640500C81758 /* LocationNotificationSample */,
 				213E869A1A0F640500C81758 /* LocationNotificationSampleTests */,
