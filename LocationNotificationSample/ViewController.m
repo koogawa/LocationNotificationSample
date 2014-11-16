@@ -24,6 +24,7 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
+    [self.locationManager requestWhenInUseAuthorization];
 
 //    [locationManager startUpdatingLocation];
 }
@@ -37,35 +38,7 @@
 
 #pragma mark - Private methods
 
-- (void)setNotificationWithTarget:(CLLocationCoordinate2D)target
-{
-    // 緯度経度の検証
-    if (!CLLocationCoordinate2DIsValid(target)) {
-        return;
-    }
-
-    // 設定する前に、設定済みの通知をキャンセルする
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-
-    // 目的地の領域を設定
-//    CLLocationCoordinate2D target = CLLocationCoordinate2DMake(35.74054023732303,139.61697354912758);  // 六本木
-    CLLocationDistance radius = 100.0;  // 半径何メートルに入ったら通知するか
-    NSString *identifier = @"identifier"; // 通知のID
-    CLCircularRegion *region = [[CLCircularRegion alloc] initWithCenter:target
-                                                                 radius:radius
-                                                             identifier:identifier];
-
-    // Notificationセット
-    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
-    localNotification.alertBody = @"目的地に着きました！";
-    localNotification.soundName = UILocalNotificationDefaultSoundName;
-    localNotification.alertAction = @"OK";
-    localNotification.regionTriggersOnce = YES;
-    localNotification.region = region;
-
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
-}
-
+// 最初に位置情報が取得できたタイミングで一度だけ呼ばれる
 - (void)userLocationDidInitialize:(MKUserLocation *)userLocation
 {
     NSArray *scheduledLocalNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
@@ -85,12 +58,43 @@
     }
 }
 
+// Location Notificationセット
+- (void)setNotificationWithTarget:(CLLocationCoordinate2D)target
+{
+    // 緯度経度の検証
+    if (!CLLocationCoordinate2DIsValid(target)) {
+        return;
+    }
+
+    // 設定する前に、設定済みの通知をキャンセルする
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+
+    // 目的地の領域を設定
+    CLLocationDistance radius = 100.0;  // 半径何メートルに入ったら通知するか
+    NSString *identifier = @"identifier"; // 通知のID
+    CLCircularRegion *region = [[CLCircularRegion alloc] initWithCenter:target
+                                                                 radius:radius
+                                                             identifier:identifier];
+
+    // Notificationセット
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    localNotification.alertBody = @"目的地に着きました！";
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    localNotification.alertAction = @"OK";
+    localNotification.regionTriggersOnce = YES;
+    localNotification.region = region;
+
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
+// 現在地ボタンがタップされた
 - (IBAction)currentButtonDidTap:(id)sender
 {
     CLLocationCoordinate2D center = self.mapView.userLocation.location.coordinate;
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(center, 400, 400) animated:YES];
 }
 
+// 保存ボタンがタップされた
 - (IBAction)saveButtonDidTap:(id)sender
 {
     if ([self.mapView.overlays count] == 0) {
