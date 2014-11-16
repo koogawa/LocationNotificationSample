@@ -24,9 +24,6 @@
     // Do any additional setup after loading the view, typically from a nib.
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;
-    
-    // 位置情報使用許可
-    [self.locationManager requestAlwaysAuthorization];
 
 //    [locationManager startUpdatingLocation];
 }
@@ -136,16 +133,16 @@
     }
 }
 
-- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id <MKOverlay>)overlay
+- (MKOverlayRenderer *)mapView:(MKMapView *)mapView
+            rendererForOverlay:(id <MKOverlay>)overlay
 {
-    NSLog(@"overlay %@", overlay);
-
     if ([overlay isKindOfClass:[MKCircle class]])
     {
-        MKCircleRenderer *renderer = [[MKCircleRenderer alloc] initWithCircle:(MKCircle *)overlay];
-        renderer.strokeColor = [UIColor redColor];
-        renderer.fillColor = [[UIColor redColor] colorWithAlphaComponent:0.4];
-        renderer.lineWidth = 1;
+        MKCircleRenderer *renderer =
+        [[MKCircleRenderer alloc] initWithCircle:(MKCircle *)overlay];
+        renderer.strokeColor = [UIColor redColor]; // 外側の線の色
+        renderer.fillColor = [[UIColor redColor] colorWithAlphaComponent:0.4]; // 内側を塗りつぶす色
+        renderer.lineWidth = 1; // 外側の線の太さ
 
         return renderer;
     }
@@ -156,18 +153,13 @@
 
 #pragma mark - CLLocationManager delegate
 
-- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+- (void)locationManager:(CLLocationManager *)manager
+didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     switch (status)
     {
         case kCLAuthorizationStatusDenied:
-            [manager requestAlwaysAuthorization];
-            break;
-            
-        case kCLAuthorizationStatusAuthorizedWhenInUse:
-        case kCLAuthorizationStatusAuthorizedAlways:
-            // 位置情報の使用が許可されていたらNotificationセット
-//            [self setNotification];
+            [manager requestWhenInUseAuthorization];
             break;
             
         default:
